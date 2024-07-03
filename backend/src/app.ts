@@ -1,4 +1,5 @@
 import express from "express";
+import bodyParser from "body-parser";
 const app = express();
 const port = 3000;
 type Message = {
@@ -7,7 +8,7 @@ type Message = {
 };
 let messages: Message[] = [];
 
-app.use(express.json());
+app.use(bodyParser.json());
 
 app.get("/status", (req, res) => {
   res.statusCode = 200;
