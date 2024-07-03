@@ -1,22 +1,31 @@
-import express = require('express');
+import express from "express";
 const app = express();
 const port = 3000;
+type Message = {
+  id: string;
+  message: string;
+};
+let messages: Message[] = [];
 
-app.get('/status', (req, res) => {
+app.use(express.json());
+
+app.get("/status", (req, res) => {
   res.statusCode = 200;
   res.send();
 });
 
-app.get('/greetings', (req, res) => {
-  res.header({ 'Access-Control-Allow-Origin': '*' });
-  try {
-    res.statusCode = 200;
-    res.json([]);
-  } catch (err) {
-    console.log(err);
-    res.statusCode = 500;
-    res.send();
-  }
+app.get("/greetings", (req, res) => {
+  res.header({ "Access-Control-Allow-Origin": "*" });
+  res.statusCode = 200;
+  res.json(messages);
+});
+
+app.post("/greetings", (req, res) => {
+  res.header({ "Access-Control-Allow-Origin": "*" });
+  messages.push({ id: messages.length.toString(), message: req.body.message });
+  res.statusCode = 201;
+  res.json(messages);
+  console.log(req.body);
 });
 
 app.listen(port, () => {
