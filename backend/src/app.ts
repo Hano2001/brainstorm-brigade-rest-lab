@@ -1,13 +1,14 @@
-import express = require("express");
+import express = require('express');
 const app = express();
 const port = 3000;
 
-app.get("/status", (req, res) => {
+app.get('/status', (req, res) => {
   res.statusCode = 200;
   res.send();
 });
 
-app.get("/greetings", (req, res) => {
+app.get('/greetings', (req, res) => {
+  res.header({ 'Access-Control-Allow-Origin': '*' });
   try {
     res.statusCode = 200;
     res.json([]);
