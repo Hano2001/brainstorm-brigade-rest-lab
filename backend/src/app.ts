@@ -7,6 +7,17 @@ app.get("/status", (req, res) => {
   res.send();
 });
 
+app.get("/greetings", (req, res) => {
+  try {
+    res.statusCode = 200;
+    res.json([]);
+  } catch (err) {
+    console.log(err);
+    res.statusCode = 500;
+    res.send();
+  }
+});
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
