@@ -1,5 +1,7 @@
 import "./style.css";
-const response = await fetch("http://localhost:3000/greetings");
+const response = await fetch("http://localhost:3000/greetings").catch((err) =>
+  console.log(err)
+);
 const greetings: string[] = await response.json();
 
 const greetingsMessage = document.getElementById("greetings-message");
@@ -13,7 +15,6 @@ greetingForm?.addEventListener("submit", (e) => {
     method: "POST",
     body: JSON.stringify({ message: input.value }),
     headers: {
-      Accept: "application/json",
       "Content-Type": "application/json",
     },
   });

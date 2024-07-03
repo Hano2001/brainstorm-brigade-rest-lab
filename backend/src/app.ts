@@ -1,5 +1,5 @@
 import express from "express";
-import bodyParser from "body-parser";
+import cors from "cors";
 const app = express();
 const port = 3000;
 type Message = {
@@ -8,7 +8,9 @@ type Message = {
 };
 let messages: Message[] = [];
 
-app.use(bodyParser.json());
+app.use(express.json());
+
+app.use(cors());
 
 app.get("/status", (req, res) => {
   res.statusCode = 200;
@@ -16,17 +18,16 @@ app.get("/status", (req, res) => {
 });
 
 app.get("/greetings", (req, res) => {
-  res.header({ "Access-Control-Allow-Origin": "*" });
   res.statusCode = 200;
   res.json(messages);
 });
 
 app.post("/greetings", (req, res) => {
-  res.header({ "Access-Control-Allow-Origin": "*" });
-  messages.push({ id: messages.length.toString(), message: req.body.message });
+  console.table(req.body);
+  const { message } = req.body;
+  messages.push({ id: messages.length.toString(), message: message });
   res.statusCode = 201;
   res.json(messages);
-  console.log(req.body);
 });
 
 app.listen(port, () => {
