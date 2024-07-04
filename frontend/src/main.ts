@@ -1,22 +1,32 @@
 import "./style.css";
-const response = await fetch("http://localhost:3000/greetings").catch((err) =>
+type Message = {
+  id: string;
+  message: string;
+};
+const response = await fetch("http://localhost:3001/greetings").catch((err) =>
   console.log(err)
 );
-const greetings: string[] = await response.json();
+const greetings: Message[] = await response.json();
 
 const greetingsMessage = document.getElementById("greetings-message");
 const greetingForm = document.getElementById("greeting-form");
 
-greetingForm?.addEventListener("submit", (e) => {
+greetingForm?.addEventListener("submit", async (e) => {
   e.preventDefault();
   const input: HTMLInputElement = document.getElementById("greeting-input");
   console.log(JSON.stringify({ message: input.value }));
-  fetch("http://localhost:3000/greetings", {
+
+  const res = await fetch("http://localhost:3001/greetings", {
     method: "POST",
     body: JSON.stringify({ message: input.value }),
     headers: {
       "Content-Type": "application/json",
     },
+  });
+  const data: Message[] = await res.json();
+  greetingsMessage!.innerHTML = "";
+  data.forEach((greeting) => {
+    greetingsMessage.innerHTML += greeting.message;
   });
 });
 
@@ -24,6 +34,9 @@ if (greetingsMessage) {
   if (greetings.length == 0) {
     greetingsMessage.innerHTML = "No messages";
   } else {
-    greetingsMessage.innerHTML = greetings[0].message;
+    console.table(greetings);
+    greetings.forEach((greeting) => {
+      greetingsMessage.innerHTML += greeting.message;
+    });
   }
 }
