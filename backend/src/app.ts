@@ -1,6 +1,6 @@
-import express from 'express';
-import cors from 'cors';
-import z from 'zod';
+import express from "express";
+import cors from "cors";
+import z from "zod";
 
 const app = express();
 const port = 3000;
@@ -18,17 +18,17 @@ app.use(express.json());
 
 app.use(cors());
 
-app.get('/status', (req, res) => {
+app.get("/status", (req, res) => {
   res.statusCode = 200;
   res.send();
 });
 
-app.get('/greetings', (req, res) => {
+app.get("/greetings", (req, res) => {
   res.statusCode = 200;
   res.json(messages);
 });
 
-app.post('/greetings', (req, res) => {
+app.post("/greetings", (req, res) => {
   console.table(req.body);
   const { message } = req.body;
   const messageObject = { id: messages.length.toString(), message: message };
@@ -38,13 +38,22 @@ app.post('/greetings', (req, res) => {
   res.json(messageObject);
 });
 
-app.delete('/greetings/:id', (req, res) => {
+app.delete("/greetings/:id", (req, res) => {
   const { id } = req.params;
   const indexToDelete = messages.findIndex((message) => message.id == id);
   if (indexToDelete == -1) {
     res.sendStatus(404);
   }
   messages.splice(indexToDelete, 1);
+  res.json(id);
+});
+
+app.patch("/greetings/:id", (req, res) => {
+  const { id } = req.params;
+  const { message } = req.body;
+  const idToPatch = messages.findIndex((item) => item.id == id);
+  Message.parse(messages[idToPatch]);
+  messages[idToPatch].message = message;
   res.json(id);
 });
 
