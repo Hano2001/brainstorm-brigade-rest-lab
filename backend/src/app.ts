@@ -38,6 +38,12 @@ app.post("/greetings", (req, res) => {
   res.json(messageObject);
 });
 
+app.delete("/greetings/:id", (req, res) => {
+  const { id } = req.params;
+  console.log(id);
+  res.json(id);
+});
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
