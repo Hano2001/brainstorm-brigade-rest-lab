@@ -51,9 +51,10 @@ app.delete("/greetings/:id", (req, res) => {
 app.patch("/greetings/:id", (req, res) => {
   const { id } = req.params;
   const { message } = req.body;
+  console.log(message);
   const idToPatch = messages.findIndex((item) => item.id == id);
-  Message.parse(messages[idToPatch]);
   messages[idToPatch].message = message;
+  Message.parse(messages[idToPatch]);
   res.json(id);
 });
 
