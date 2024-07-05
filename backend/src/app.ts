@@ -24,6 +24,7 @@ const User = z.object({
     .regex(/.*\d.*/, "One number")
     .min(8)
     .max(20),
+  dateOfBirth: z.string().date(),
 });
 
 type Message = z.infer<typeof Message>;
