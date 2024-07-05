@@ -10,9 +10,27 @@ const Message = z.object({
   message: z.string(),
 });
 
+const User = z.object({
+  id: z.string(),
+  username: z.string(),
+  email: z.string().email(),
+  password: z.string().min(5),
+  DOB: z.string().date(),
+});
+
 type Message = z.infer<typeof Message>;
+type User = z.infer<typeof User>;
 
 let messages: Message[] = [];
+let users: User[] = [
+  {
+    id: "1",
+    username: "Carlos",
+    email: "this@is",
+    password: "carlos",
+    DOB: "1993-08-09",
+  },
+];
 
 app.use(express.json());
 
@@ -26,6 +44,11 @@ app.get("/status", (req, res) => {
 app.get("/greetings", (req, res) => {
   res.statusCode = 200;
   res.json(messages);
+});
+
+app.get("/users", (req, res) => {
+  res.statusCode = 200;
+  res.json(users);
 });
 
 app.post("/greetings", (req, res) => {
