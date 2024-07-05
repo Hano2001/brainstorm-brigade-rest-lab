@@ -43,14 +43,19 @@ app.get("/status", (req, res) => {
   res.send();
 });
 
-app.get("/greetings", (req, res) => {
-  res.statusCode = 200;
-  res.json(messages);
-});
-
 app.get("/users", (req, res) => {
   res.statusCode = 200;
   res.json(users);
+});
+
+app.post("/users", (req, res) => {
+  const { user } = req.body;
+  res.json(user);
+});
+
+app.get("/greetings", (req, res) => {
+  res.statusCode = 200;
+  res.json(messages);
 });
 
 app.post("/greetings", (req, res) => {

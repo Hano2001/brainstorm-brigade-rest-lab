@@ -1,4 +1,5 @@
 import "./style.css";
+import { v4 } from "uuid";
 type Message = {
   id: string;
   message: string;
@@ -12,6 +13,17 @@ const greetingsMessage = document.getElementById("greetings-message");
 const greetingForm = document.getElementById("greeting-form");
 const deleteGreetingsForm = document.getElementById("delete-greetings-form");
 const patchGreetingsForm = document.getElementById("patch-greetings-form");
+const postUserButton = document.getElementById("post-user");
+
+postUserButton?.addEventListener("click", () => {
+  fetch("http://localhost:3000/users", {
+    method: "POST",
+    body: JSON.stringify({ id: v4() }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+});
 
 greetingForm?.addEventListener("submit", async (e) => {
   e.preventDefault();
