@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import z from "zod";
+import { v4 } from "uuid";
 
 const app = express();
 const port = 3000;
@@ -11,7 +12,7 @@ const Message = z.object({
 });
 
 const User = z.object({
-  id: z.string().uuid(),
+  auth: z.string().uuid(),
   username: z
     .string()
     .regex(/^[a-z0-9]+$/i, "Should be alphanumeric")
@@ -29,7 +30,7 @@ const User = z.object({
     z
       .string()
       .regex(/admin|user|guest/)
-      .min(1)
+      .min(1),
   ),
 });
 
@@ -39,7 +40,7 @@ type User = z.infer<typeof User>;
 let messages: Message[] = [];
 let users: User[] = [
   {
-    id: "3b3b1594-4b26-4d4c-9e22-3006c82b9e1d",
+    auth: "3b3b1594-4b26-4d4c-9e22-3006c82b9e1d",
     username: "Something",
     email: "some@thing.se",
     password: "a1234567",
@@ -63,10 +64,10 @@ app.get("/users", (req, res) => {
 });
 
 app.post("/users", (req, res) => {
-  const user = { ...req.body, roles: ["user"] };
+  const user = { ...req.body, auth: v4(), roles: ["user"] };
   User.parse(user);
   console.log(user);
-  res.json({ id: user.id });
+  res.json({ auth: user.auth });
 });
 
 app.get("/greetings", (req, res) => {
