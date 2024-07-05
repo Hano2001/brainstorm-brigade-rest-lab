@@ -5,7 +5,7 @@ type Message = {
   message: string;
 };
 const response = await fetch("http://localhost:3000/greetings").catch((err) =>
-  console.log(err)
+  console.log(err),
 );
 const greetings: Message[] = await response.json();
 
@@ -18,7 +18,11 @@ const postUserButton = document.getElementById("post-user");
 postUserButton?.addEventListener("click", () => {
   fetch("http://localhost:3000/users", {
     method: "POST",
-    body: JSON.stringify({ id: v4(), username: "A11an" }),
+    body: JSON.stringify({
+      id: v4(),
+      username: "A11an",
+      email: "allan@mackan.se",
+    }),
     headers: {
       "Content-Type": "application/json",
     },
@@ -52,7 +56,7 @@ greetingForm?.addEventListener("submit", async (e) => {
 deleteGreetingsForm?.addEventListener("submit", async (e) => {
   e.preventDefault();
   const input = document.getElementById(
-    "delete-greeting-input"
+    "delete-greeting-input",
   ) as HTMLInputElement;
   await fetch(`http://localhost:3000/greetings/${input.value}`, {
     method: "DELETE",
@@ -73,11 +77,11 @@ patchGreetingsForm?.addEventListener("submit", async (e) => {
   e.preventDefault();
 
   const idInput = document.getElementById(
-    "patch-greeting-id-input"
+    "patch-greeting-id-input",
   ) as HTMLInputElement;
 
   const messageInput = document.getElementById(
-    "patch-greeting-message-input"
+    "patch-greeting-message-input",
   ) as HTMLInputElement;
 
   await fetch(`http://localhost:3000/greetings/${idInput.value}`, {

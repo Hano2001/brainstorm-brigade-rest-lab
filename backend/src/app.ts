@@ -17,6 +17,7 @@ const User = z.object({
     .regex(/^[a-z0-9]+$/i)
     .min(3)
     .max(30),
+  email: z.string().email(),
 });
 
 type Message = z.infer<typeof Message>;
@@ -41,8 +42,9 @@ app.get("/users", (req, res) => {
 
 app.post("/users", (req, res) => {
   User.parse(req.body);
-  const { id, username } = req.body;
-  res.json({ id: id, username: username });
+  const { id } = req.body;
+  console.log(req.body);
+  res.json({ id: id });
 });
 
 app.get("/greetings", (req, res) => {
