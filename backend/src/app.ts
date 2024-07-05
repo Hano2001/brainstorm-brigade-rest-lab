@@ -37,7 +37,16 @@ type Message = z.infer<typeof Message>;
 type User = z.infer<typeof User>;
 
 let messages: Message[] = [];
-let users: User[] = [];
+let users: User[] = [
+  {
+    id: "3b3b1594-4b26-4d4c-9e22-3006c82b9e1d",
+    username: "Something",
+    email: "some@thing.se",
+    password: "a1234567",
+    dateOfBirth: "1993-06-10",
+    roles: ["admin", "user"],
+  },
+];
 
 app.use(express.json());
 
