@@ -16,6 +16,7 @@ const User = z.object({
   email: z.string().email(),
   password: z.string().min(5),
   DOB: z.string().date(),
+  roles: z.array(z.string().regex(/admin|user|guest/)).min(1),
 });
 
 type Message = z.infer<typeof Message>;
@@ -29,6 +30,7 @@ let users: User[] = [
     email: "this@is",
     password: "carlos",
     DOB: "1993-08-09",
+    roles: ["user"],
   },
 ];
 
