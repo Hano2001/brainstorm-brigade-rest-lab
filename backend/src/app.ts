@@ -11,13 +11,7 @@ const Message = z.object({
   message: z.string(),
 });
 
-const User = z.object({
-  auth: z.string().uuid(),
-  username: z
-    .string()
-    .regex(/^[a-z0-9]+$/i, "Should be alphanumeric")
-    .min(3)
-    .max(30),
+const credentials = {
   email: z.string().email(),
   password: z
     .string()
@@ -25,12 +19,24 @@ const User = z.object({
     .regex(/.*\d.*/, "One number")
     .min(8)
     .max(20),
+};
+
+const Zcredentials = z.object(credentials);
+
+const User = z.object({
+  auth: z.string().uuid(),
+  username: z
+    .string()
+    .regex(/^[a-z0-9]+$/i, "Should be alphanumeric")
+    .min(3)
+    .max(30),
+  ...credentials,
   dateOfBirth: z.string().date(),
   roles: z.array(
     z
       .string()
       .regex(/admin|user|guest/)
-      .min(1),
+      .min(1)
   ),
 });
 
@@ -67,7 +73,16 @@ app.post("/users", (req, res) => {
   const user = { ...req.body, auth: v4(), roles: ["user"] };
   User.parse(user);
   console.log(user);
+  users.push(user);
   res.json({ auth: user.auth });
+});
+
+app.post("/auth/login", (req, res) => {
+  Zcredentials.parse(req.body);
+  const user = users.find(
+    (u) => u.email == req.body.email && u.password == req.body.password
+  );
+  res.json(user ? { auth: user.auth } : "Incorrect credentials");
 });
 
 app.get("/greetings", (req, res) => {
