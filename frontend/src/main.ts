@@ -18,7 +18,7 @@ const postUserButton = document.getElementById("post-user");
 postUserButton?.addEventListener("click", () => {
   fetch("http://localhost:3000/users", {
     method: "POST",
-    body: JSON.stringify({ id: v4() }),
+    body: JSON.stringify({ id: v4(), username: "A11an" }),
     headers: {
       "Content-Type": "application/json",
     },
