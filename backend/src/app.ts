@@ -25,6 +25,12 @@ const User = z.object({
     .min(8)
     .max(20),
   dateOfBirth: z.string().date(),
+  roles: z.array(
+    z
+      .string()
+      .regex(/admin|user|guest/)
+      .min(1)
+  ),
 });
 
 type Message = z.infer<typeof Message>;
@@ -48,10 +54,10 @@ app.get("/users", (req, res) => {
 });
 
 app.post("/users", (req, res) => {
-  User.parse(req.body);
-  const { id } = req.body;
-  console.log(req.body);
-  res.json({ id: id });
+  const user = { ...req.body, roles: ["user"] };
+  User.parse(user);
+  console.log(user);
+  res.json({ id: user.id });
 });
 
 app.get("/greetings", (req, res) => {
