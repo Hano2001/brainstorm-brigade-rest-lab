@@ -14,10 +14,16 @@ const User = z.object({
   id: z.string().uuid(),
   username: z
     .string()
-    .regex(/^[a-z0-9]+$/i)
+    .regex(/^[a-z0-9]+$/i, "Should be alphanumeric")
     .min(3)
     .max(30),
   email: z.string().email(),
+  password: z
+    .string()
+    .regex(/.*[a-z].*/i, "One lowercase character")
+    .regex(/.*\d.*/, "One number")
+    .min(8)
+    .max(20),
 });
 
 type Message = z.infer<typeof Message>;
